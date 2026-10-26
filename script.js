@@ -3,6 +3,17 @@ const BADGE_COLORS = ['#2F6B4F', '#3D5A80', '#8C5E58', '#6A7B76'];
 const addMemberForm = document.querySelector("#add-member-form")
 const MEMBERS_LOCALSTORAGE_KEY = "members"
 let p = getElementById("member-error-msg")
+const expenseTitleInput = getElementById("expense-title-input")
+const expenseAmountinput = getElementById("expense-amount-input")
+const expansePayeSelect = getElementById("expense-payer-select")
+const splitMemberCheckbox = document.querySelectorAll("split -member-checkbox")
+const addExpenseBtn = getElementById("add-expense-btn")
+const expenseValidationHint = getElementById("expense-validation-hint")
+const splitMembersContainer = getElementById("split-members-container")
+const splitSelectAllBtn = getElementById("split-select-all-btn")
+const splitCleaAllrBtn = getElementById("split-clear-all-btn");
+const addExpenseForm = getElementById("add-expense-form")
+
 
 let allMembers = getItems(MEMBERS_LOCALSTORAGE_KEY)
 
@@ -111,6 +122,50 @@ function renderMembers() {
 
         // console.log(e.target.closest(".remove-member-btn").dataset.id);
     })
+
+    if (allMembers.length < 2) {
+        expenseMembersWarning.classList.remove("hidden")
+        addExpenseForm.classList.add("hidden")
+
+    }
+    else {
+
+        expenseMembersWarning.classList.add("hidden")
+        addExpenseForm.classList.remove("hidden")
+        splitMembersContainer.innerHTML = ""
+
+        allMembers.forEach(({ id, name }) => {
+            let option = document.createElement("option")
+            option.value = id;
+            option.textContent = name;
+            let label = document.createElement("label")
+            label.className = "flex items-center gap-2.5 text-xs font-sans text-ledger-ink cursor-pointer hover:bg-slate-100/60 px-2 py-2 rounded-sm select-none border border-transparent hover:border-ledger-border transition-colors min-h-[36px]"
+            label.innerHTML = `
+         <input type="checkbox" value=${name} class="split-member-checkbox rounded-sm text-ledger-forest accent-[#2F6B4F] cursor-pointer w-4 h-4 shrink-0" checked>
+                  <span class="truncate break-all min-w-0">${name}</span>`
+            expansePayeSelect.append(option)
+            splitMembersContainer.append(label)
+        })
+    }
+    validateAddExpanse()
+    // console.log(getElementById("expense-payer-select").value);
+
+
+    // expansePayeSelect.innerHTML = ""
+    // splitMembersContainer.innerHTML = ""
+
+    // allMembers.forEach(({ id, name }) => {
+    //     let option = document.createElement("option")
+    //     option.value = id;
+    //     option.textContent = name;
+    //     let label = document.createElement("label")
+    //     label.className = "flex items-center gap-2.5 text-xs font-sans text-ledger-ink cursor-pointer hover:bg-slate-100/60 px-2 py-2 rounded-sm select-none border border-transparent hover:border-ledger-border transition-colors min-h-[36px]"
+    //     label.innerHTML = `
+    //      <input type="checkbox" value=${name} class="split-member-checkbox rounded-sm text-ledger-forest accent-[#2F6B4F] cursor-pointer w-4 h-4 shrink-0" checked>
+    //               <span class="truncate break-all min-w-0">${name}</span>`
+    //     expansePayeSelect.append(option)
+    //     splitMembersContainer.append(label)
+    // })
 }
 
 
@@ -118,7 +173,7 @@ function renderMembers() {
 
 
 const expenseMembersWarning = getElementById("expense-members-warning")
-const addExpenseForm = getElementById("add-expense-form")
+
 
 
 
@@ -128,41 +183,134 @@ function removeMember(id) {
 
 }
 
-function renderAddExpanse() {
-    if (allMembers.length < 2) {
-        expenseMembersWarning.classList.remove("hidden")
-        addExpenseForm.classList.add("hidden")
-    }
-    else {
+// function renderAddExpanse() {
+//     if (allMembers.length < 2) {
+//         expenseMembersWarning.classList.remove("hidden")
+//         addExpenseForm.classList.add("hidden")
+//     }
+//     else {
 
-        expenseMembersWarning.classList.add("hidden")
-        addExpenseForm.classList.remove("hidden")
-    }
-    // console.log(getElementById("expense-payer-select").value);
-    let expansePayeSelect = getElementById("expense-payer-select")
-    let splitMembersContainer = getElementById("split-members-container")
-    expansePayeSelect.innerHTML = ""
-    splitMembersContainer.innerHTML = ""
+//         expenseMembersWarning.classList.add("hidden")
+//         addExpenseForm.classList.remove("hidden")
+//     }
+//     // console.log(getElementById("expense-payer-select").value);
 
-    allMembers.forEach(({ id, name }) => {
-        let option = document.createElement("option")
-        option.value = id;
-        option.textContent = name;
-        let label = document.createElement("label")
-        label.className = "flex items-center gap-2.5 text-xs font-sans text-ledger-ink cursor-pointer hover:bg-slate-100/60 px-2 py-2 rounded-sm select-none border border-transparent hover:border-ledger-border transition-colors min-h-[36px]"
-        label.innerHTML = `
-         <input type="checkbox" value=${name} class="split-member-checkbox rounded-sm text-ledger-forest accent-[#2F6B4F] cursor-pointer w-4 h-4 shrink-0" checked>
-                  <span class="truncate break-all min-w-0">${name}</span>`
-        expansePayeSelect.append(option)
-        splitMembersContainer.append(label)
-    })
+
+//     expansePayeSelect.innerHTML = ""
+//     splitMembersContainer.innerHTML = ""
+
+//     allMembers.forEach(({ id, name }) => {
+//         let option = document.createElement("option")
+//         option.value = id;
+//         option.textContent = name;
+//         let label = document.createElement("label")
+//         label.className = "flex items-center gap-2.5 text-xs font-sans text-ledger-ink cursor-pointer hover:bg-slate-100/60 px-2 py-2 rounded-sm select-none border border-transparent hover:border-ledger-border transition-colors min-h-[36px]"
+//         label.innerHTML = `
+//          <input type="checkbox" value=${name} class="split-member-checkbox rounded-sm text-ledger-forest accent-[#2F6B4F] cursor-pointer w-4 h-4 shrink-0" checked>
+//                   <span class="truncate break-all min-w-0">${name}</span>`
+//         expansePayeSelect.append(option)
+//         splitMembersContainer.append(label)
+//     })
+// }
+
+let isvalid = false
+
+
+function validateAddExpanse() {
+    const title = expenseTitleInput.value.trim()
+const amount = parseFloat(expenseAmountinput.value)
+const payer = expansePayeSelect.value
+
+    const isValidAmount = amount > 0
+    const selectedCount = splitMembersContainer.querySelectorAll("input:checked").length
+    console.log(selectedCount);
+    const isValidSelectedCount = selectedCount > 0;
+    isvalid = title && isValidAmount && isValidSelectedCount;
+    addExpenseBtn.disabled = !isvalid;
+    if (!title) {
+        expenseValidationHint.textContent = `enter expense title`
+    }
+    else if (!isValidAmount) {
+        expenseValidationHint.textContent = `enter valid amount`
+
+    }
+    else if (!isValidSelectedCount) {
+        expenseValidationHint.textContent = `select Atleast one person to split`
+
+    }
+    else if (selectedCount > 1) {
+        expenseValidationHint.textContent = `Splitting between ${selectedCount} people`
+
+    }
+
 }
+
+// expenseTitleInput.addEventListener("input" , (e)=>{
+//     e.stopImmediatePropagation();
+//     validateAddExpanse()
+// })
+// expenseAmountinput.addEventListener("input" , (e)=>{
+//     e.stopImmediatePropagation();
+//     validateAddExpanse()
+// })
+
+[expenseTitleInput, expenseAmountinput].forEach(ele => {
+    ele.addEventListener("input", validateAddExpanse)
+})
+
+function splitCheckBoxToggle(checked) {
+    const checkedInputs = splitMembersContainer.querySelectorAll("input")
+    checkedInputs.forEach((e) => {
+        e.checked = checked
+    })
+    validateAddExpanse()
+}
+
+addExpenseForm.addEventListener("submit", (e) => {
+    e.preventDefault()
+
+    if (!isvalid) {
+        return
+    }
+
+    const title = expenseTitleInput.value.trim()
+const amount = parseFloat(expenseAmountinput.value)
+const payer = expansePayeSelect.value
+// const splitMember = []
+// splitMembersContainer.querySelectorAll("input:checked").forEach(e => {
+//     splitMember.push(e.value)
+// });
+
+let splitMember = Array.from(splitMembersContainer.querySelectorAll("input:checked")).map(e => e.value)
+
+console.log({amount , payer , splitMember , title});
+
+
+
+    //     const title = expenseTitleInput.value.trim()
+    // const amount = parseFloat(expenseAmountinput.value)
+
+    // const isValidAmount = amount > 0
+    // const selectedCount = splitMembersContainer.querySelectorAll("input:checked").length
+    // console.log(selectedCount);
+    // const isValidSelectedCount = selectedCount >0 ;
+    //  isvalid = title && isValidAmount && isValidSelectedCount;
+    // addExpenseBtn.disabled = !isvalid;
+    console.log("form submitted");
+})
+
+splitMembersContainer.addEventListener("change", validateAddExpanse)
+
+splitCleaAllrBtn.addEventListener("click", () => splitCheckBoxToggle(false))
+
+splitSelectAllBtn.addEventListener("click", () => splitCheckBoxToggle(true))
+
 
 function renderAll() {
 
     renderMembers()
 
-    renderAddExpanse()
+    // renderAddExpanse()
 
 
 }
